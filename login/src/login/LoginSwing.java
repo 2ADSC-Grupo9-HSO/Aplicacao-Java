@@ -252,7 +252,7 @@ public class LoginSwing extends javax.swing.JFrame {
             txtPassword.setText(null);
             txtPassword.requestFocus();
             
-            txtPassword.setEchoChar('@');
+            txtPassword.setEchoChar('\u2022');
             removePlaceholderStyle(txtPassword);
         }
     }//GEN-LAST:event_txtPasswordFocusGained
