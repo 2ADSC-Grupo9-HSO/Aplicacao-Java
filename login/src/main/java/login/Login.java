@@ -37,6 +37,8 @@ public class Login extends javax.swing.JFrame {
 
         addPlaceholderStyle(txtPassword);
         addPlaceholderStyle(txtUser);
+        
+        btnLogin.requestFocus();
     }
 
     private void addPlaceholderStyle(JTextField textField) {
