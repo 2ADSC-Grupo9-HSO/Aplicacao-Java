@@ -5,6 +5,8 @@
 package database;
 
 import java.sql.*;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  *
@@ -12,32 +14,33 @@ import java.sql.*;
  */
 public class Requests {
 
-    public Boolean loginSQL(Connection connec, String user, String password) {
-        Boolean achou = false;
-        ResultSet resultSet = null;
-        String sql = String.format("SELECT * FROM usuarios WHERE usuario = '%s' AND senha = '%s'", user, password);
+    public Maquina loginSQL(JdbcTemplate conexao, String user, String password) {
+
+        String sql = "SELECT * FROM tbInfoMaquina WHERE hostName = ?";
 
         try {
-            Statement statement = connec.createStatement();
-            resultSet = statement.executeQuery(sql);
-            if (resultSet.isBeforeFirst()) {
-                achou = true;
-            }
+            
+            Maquina usuario = conexao.queryForObject(sql,new BeanPropertyRowMapper<>(Maquina.class), user);
+            
+            System.out.println(usuario);
+            
+            return usuario;
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             System.out.println("Não foi possivel selecionar os dados " + ex);
+            
+            return null;
         }
-        return achou;
     }
 
-    public void insertSQL(Connection connec) {
+    public void insertSQL(JdbcTemplate conexao) {
         PreparedStatement stmt = null;
         String sql = "INSEERT INTO usuarios VALUES ('fabiano', '987')";
+        
+        conexao.execute(sql);
 
         try {
-            stmt = connec.prepareStatement(sql);
-            stmt.executeUpdate();
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             System.out.println("Ocorreu um problema ao inserir dados " + ex);
         }
     }

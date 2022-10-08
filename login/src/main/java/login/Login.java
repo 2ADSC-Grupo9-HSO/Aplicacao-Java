@@ -4,12 +4,14 @@
  */
 package login;
 
+import database.Maquina;
 import database.ModuloConexao;
 import database.Requests;
 import java.awt.Color;
 import java.awt.Font;
 import java.sql.Connection;
 import javax.swing.JTextField;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  *
@@ -47,15 +49,10 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void efetuarLogin(String user, String senha) {
-        Connection connec = this.conexao.getConnection();
+        JdbcTemplate conexao = this.conexao.getConnection();
 
-        Boolean conectou = this.requisicoes.loginSQL(connec, user, senha);
+        Maquina usuario = this.requisicoes.loginSQL(conexao, user, senha);
 
-        if (conectou) {
-            System.out.println("conectado");
-        } else {
-            System.out.println("Não foi possivel conectar");
-        }
     }
 
     /**
@@ -107,6 +104,14 @@ public class Login extends javax.swing.JFrame {
         btnLogin.setText("LOGIN");
         btnLogin.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 191, 255), 2, true));
         btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnLoginMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnLoginMouseExited(evt);
+            }
+        });
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);
@@ -297,6 +302,18 @@ public class Login extends javax.swing.JFrame {
             txtPassword.setEchoChar('\u0000');
         }
     }//GEN-LAST:event_txtPasswordFocusLost
+
+    private void btnLoginMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseEntered
+        btnLogin.setBackground(new java.awt.Color(26, 136, 173));
+        btnLogin.setForeground(new java.awt.Color(0, 0, 0));
+        btnLogin.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+    }//GEN-LAST:event_btnLoginMouseEntered
+
+    private void btnLoginMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseExited
+        btnLogin.setBackground(new java.awt.Color(0, 0, 0));
+        btnLogin.setForeground(new java.awt.Color(0, 191, 255));
+        btnLogin.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 191, 255), 2, true));
+    }//GEN-LAST:event_btnLoginMouseExited
 
     /**
      * @param args the command line arguments
