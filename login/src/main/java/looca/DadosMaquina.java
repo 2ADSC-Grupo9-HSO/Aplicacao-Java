@@ -36,9 +36,6 @@ public class DadosMaquina {
         System.out.println(".............................\n");
         
 
-        
-        System.out.println("|   Detalhes do Disco     |");
-        System.out.println(looca.getGrupoDeDiscos().getDiscos());
 
 
 
