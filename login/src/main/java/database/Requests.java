@@ -16,11 +16,11 @@ public class Requests {
 
     public Maquina loginSQL(JdbcTemplate conexao, String user, String password) {
 
-        String sql = "SELECT * FROM tbInfoMaquina WHERE hostName = ?";
+        String sql = "SELECT * FROM tbInfoMaquina WHERE hostName = ? AND senhaMaquina = ?";
 
         try {
             
-            Maquina usuario = conexao.queryForObject(sql,new BeanPropertyRowMapper<>(Maquina.class), user);
+            Maquina usuario = conexao.queryForObject(sql,new BeanPropertyRowMapper<>(Maquina.class), user, password);
             
             System.out.println(usuario);
             
@@ -35,7 +35,7 @@ public class Requests {
 
     public void insertSQL(JdbcTemplate conexao) {
         PreparedStatement stmt = null;
-        String sql = "INSEERT INTO usuarios VALUES ('fabiano', '987')";
+        String sql = "INSERT INTO usuarios VALUES (?, ?)";
         
         conexao.execute(sql);
 

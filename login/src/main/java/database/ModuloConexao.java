@@ -14,8 +14,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 public class ModuloConexao {
 
-    //private String ambiente = "Produção";
-    private String ambiente = "Desenvolvimento";
+    private String ambiente = "Produção";
+    //private String ambiente = "Desenvolvimento";
 
     private JdbcTemplate connection;
 
@@ -51,9 +51,9 @@ public class ModuloConexao {
 
                 dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
-                dataSource​.setUrl("jdbc:sqlserver://svr-projeto-hso.database.windows.net/bd-projeto-hso");
+                dataSource​.setUrl("jdbc:sqlserver://svr-projeto-hso.database.windows.net:1433;database=bd-projeto-hso");
 
-                dataSource​.setUsername("admin-projeto-hso");
+                dataSource​.setUsername("admin-projeto-hso@svr-projeto-hso");
 
                 dataSource​.setPassword("#Gfgrupo9");
                 
