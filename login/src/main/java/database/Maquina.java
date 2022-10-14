@@ -4,14 +4,30 @@
  */
 package database;
 
+import java.util.List;
+
 /**
  *
  * @author rmacedo
  */
 public class Maquina {
-    private Integer idInfoMaquina; 
-           private String hostName; 
-           private Integer senhaMaquina;
+
+    private Integer idInfoMaquina;
+    private String hostName;
+    private Integer senhaMaquina;
+    protected List<HardMaquina> hardMaquina;
+
+    public void setIdInfoMaquina(Integer idInfoMaquina) {
+        this.idInfoMaquina = idInfoMaquina;
+    }
+
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
+    }
+
+    public void setSenhaMaquina(Integer senhaMaquina) {
+        this.senhaMaquina = senhaMaquina;
+    }
 
     public Integer getIdInfoMaquina() {
         return this.idInfoMaquina;
@@ -24,17 +40,5 @@ public class Maquina {
     @Override
     public String toString() {
         return "idInfoMaquina: " + this.idInfoMaquina + "\nhostName: " + this.hostName + "\nsenhaMaquina: " + this.senhaMaquina;
-    }
-
-    public void setIdInfoMaquina(Integer idInfoMaquina) {
-        this.idInfoMaquina = idInfoMaquina;
-    }
-
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
-    }
-
-    public void setSenhaMaquina(Integer senhaMaquina) {
-        this.senhaMaquina = senhaMaquina;
     }
 }

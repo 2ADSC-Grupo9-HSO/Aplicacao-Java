@@ -4,7 +4,6 @@
  */
 package database;
 
-import java.sql.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -14,8 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 public class ModuloConexao {
 
-    private String ambiente = "Produção";
-    //private String ambiente = "Desenvolvimento";
+    //private String ambiente = "Produção";
+    private String ambiente = "Desenvolvimento";
 
     private JdbcTemplate connection;
 
@@ -35,7 +34,7 @@ public class ModuloConexao {
                 dataSource​.setPassword("2122");
                 
                 this.connection = new JdbcTemplate(dataSource);
-
+                
                 System.out.println("Conectado com sucesso " + this.connection);
 
                 return this.connection;
