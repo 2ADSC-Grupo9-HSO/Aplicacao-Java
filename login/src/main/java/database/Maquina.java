@@ -15,7 +15,7 @@ public class Maquina {
     private Integer idInfoMaquina;
     private String hostName;
     private Integer senhaMaquina;
-    protected List<HardMaquina> hardMaquina;
+    public List<HardMaquina> hardMaquina;
 
     public void setIdInfoMaquina(Integer idInfoMaquina) {
         this.idInfoMaquina = idInfoMaquina;

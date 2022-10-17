@@ -10,6 +10,7 @@ import database.Requests;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JTextField;
+import looca.TelaDados;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -51,10 +52,12 @@ public class Login extends javax.swing.JFrame {
         JdbcTemplate conexao = this.conexao.getConnection();
 
         Maquina maquina = this.requisicoes.loginSQL(conexao, user, senha);
-        
-        if(maquina != null){
-            System.out.println("certo");
-        } else{
+
+        if (maquina != null) {
+
+            new TelaDados(conexao, maquina, this).setVisible(true);
+
+        } else {
             lblWarning.setText("Usuario ou senha incorreto");
             addPlaceholderStyle(txtUser);
             txtUser.setText("Username");
