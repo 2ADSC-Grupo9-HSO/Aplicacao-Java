@@ -9,11 +9,9 @@ import com.github.britooo.looca.api.group.discos.Volume;
 import database.HardMaquina;
 import database.Maquina;
 import database.Requests;
-import java.awt.Frame;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.JFrame;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -28,10 +26,8 @@ public class TelaDados extends javax.swing.JFrame {
     /**
      * Creates new form TelaDados
      */
-    public TelaDados(JdbcTemplate conexao, Maquina maquina, Frame frame) {
+    public TelaDados(JdbcTemplate conexao, Maquina maquina) {
         initComponents();
-
-        frame.setExtendedState(JFrame.ICONIFIED);
 
         System.out.println(maquina);
 
@@ -43,7 +39,7 @@ public class TelaDados extends javax.swing.JFrame {
     }
 
     private void inserirDados(JdbcTemplate conexao, Maquina maquina) {
-        int delay = 5000;   // tempo de espera antes da 1ª execução da tarefa.
+        int delay = 2000;   // tempo de espera antes da 1ª execução da tarefa.
         int interval = 10000;  // intervalo no qual a tarefa será executada.
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -99,17 +95,65 @@ public class TelaDados extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        lblLoading = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 191, 255));
+        jLabel1.setText("Os dados da sua máquina já estão sendo capturados");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 191, 255));
+        jLabel2.setText("você pode utilizar o computador normalmente");
+
+        lblLoading.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblLoading.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/LoadingGif.gif"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jLabel2)))
+                .addContainerGap(50, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 303, Short.MAX_VALUE)
+                .addComponent(lblLoading)
+                .addGap(303, 303, 303))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                .addComponent(lblLoading)
+                .addGap(47, 47, 47))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -146,5 +190,9 @@ public class TelaDados extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblLoading;
     // End of variables declaration//GEN-END:variables
 }

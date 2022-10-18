@@ -55,7 +55,8 @@ public class Login extends javax.swing.JFrame {
 
         if (maquina != null) {
 
-            new TelaDados(conexao, maquina, this).setVisible(true);
+            new TelaDados(conexao, maquina).setVisible(true);
+            this.dispose();
 
         } else {
             lblWarning.setText("Usuario ou senha incorreto");
