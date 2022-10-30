@@ -26,30 +26,24 @@ public class TelaDados extends javax.swing.JFrame {
     /**
      * Creates new form TelaDados
      */
-    public TelaDados(JdbcTemplate conexao, Maquina maquina) {
+    public TelaDados(JdbcTemplate conexaoMysql, Maquina maquinaMysql, JdbcTemplate conexaoAzure, Maquina maquinaAzure) {
         initComponents();
 
-        System.out.println(maquina);
-
-        for (HardMaquina itemMaquina : maquina.hardMaquina) {
-            System.out.println(itemMaquina);
-        }
-
-        this.inserirDados(conexao, maquina);
+        this.inserirDados(conexaoMysql, maquinaMysql, conexaoAzure, maquinaAzure);
     }
 
-    private void inserirDados(JdbcTemplate conexao, Maquina maquina) {
+    private void inserirDados(JdbcTemplate conexaoMysql, Maquina maquinaMysql, JdbcTemplate conexaoAzure, Maquina maquinaAzure) {
         int delay = 2000;   // tempo de espera antes da 1ª execução da tarefa.
         int interval = 10000;  // intervalo no qual a tarefa será executada.
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                for (HardMaquina componente : maquina.hardMaquina) {
+                for (HardMaquina componente : maquinaMysql.hardMaquina) {
                     if (componente.getFkComponente().equals(1)) {
 
                         Double processador = looca.getProcessador().getUso();
 
-                        requisicoes.insertSQL(conexao, componente.getIdMaquina(), processador);
+                        requisicoes.insertSQL(conexaoMysql, componente.getIdMaquina(), processador);
 
                         System.out.println("processador");
 
@@ -57,7 +51,7 @@ public class TelaDados extends javax.swing.JFrame {
 
                         Double porcentUsoMemoria = looca.getMemoria().getEmUso() * 100.00 / looca.getMemoria().getTotal();
 
-                        requisicoes.insertSQL(conexao, componente.getIdMaquina(), porcentUsoMemoria);
+                        requisicoes.insertSQL(conexaoMysql, componente.getIdMaquina(), porcentUsoMemoria);
 
                         System.out.println("memoria");
 
@@ -76,12 +70,52 @@ public class TelaDados extends javax.swing.JFrame {
                         Long volumeEmUso = volumeTotal - volumeDisponivel;
                         Double porcentVolumeEmUso = (volumeEmUso * 100.00 / volumeTotal);
 
-                        requisicoes.insertSQL(conexao, componente.getIdMaquina(), porcentVolumeEmUso);
+                        requisicoes.insertSQL(conexaoMysql, componente.getIdMaquina(), porcentVolumeEmUso);
 
                         System.out.println("disco");
 
                     }
                 }
+
+                for (HardMaquina componente : maquinaAzure.hardMaquina) {
+                    if (componente.getFkComponente().equals(1)) {
+
+                        Double processador = looca.getProcessador().getUso();
+
+                        requisicoes.insertSQL(conexaoAzure, componente.getIdMaquina(), processador);
+
+                        System.out.println("processador");
+
+                    } else if (componente.getFkComponente().equals(2)) {
+
+                        Double porcentUsoMemoria = looca.getMemoria().getEmUso() * 100.00 / looca.getMemoria().getTotal();
+
+                        requisicoes.insertSQL(conexaoAzure, componente.getIdMaquina(), porcentUsoMemoria);
+
+                        System.out.println("memoria");
+
+                    } else if (componente.getFkComponente().equals(3)) {
+
+                        List<Volume> volumes = new Looca().getGrupoDeDiscos().getVolumes();
+
+                        Long volumeTotal = 0L;
+                        Long volumeDisponivel = 0L;
+                        for (Volume v : volumes) {
+
+                            volumeTotal = v.getTotal();
+                            volumeDisponivel = v.getDisponivel();
+                        }
+
+                        Long volumeEmUso = volumeTotal - volumeDisponivel;
+                        Double porcentVolumeEmUso = (volumeEmUso * 100.00 / volumeTotal);
+
+                        requisicoes.insertSQL(conexaoAzure, componente.getIdMaquina(), porcentVolumeEmUso);
+
+                        System.out.println("disco");
+
+                    }
+                }
+
             }
         }, delay, interval);
     }

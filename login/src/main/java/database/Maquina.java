@@ -14,7 +14,8 @@ public class Maquina {
 
     private Integer idInfoMaquina;
     private String hostName;
-    private Integer senhaMaquina;
+    private String senhaMaquina;
+    private String sistemaOperacional;
     public List<HardMaquina> hardMaquina;
 
     public void setIdInfoMaquina(Integer idInfoMaquina) {
@@ -25,8 +26,12 @@ public class Maquina {
         this.hostName = hostName;
     }
 
-    public void setSenhaMaquina(Integer senhaMaquina) {
+    public void setSenhaMaquina(String senhaMaquina) {
         this.senhaMaquina = senhaMaquina;
+    }
+
+    public void setSistemaOperacional(String sistemaOperacional) {
+        this.sistemaOperacional = sistemaOperacional;
     }
 
     public Integer getIdInfoMaquina() {
@@ -35,6 +40,14 @@ public class Maquina {
 
     public String getHostName() {
         return this.hostName;
+    }
+
+    public String getSistemaOperacional() {
+        return sistemaOperacional;
+    }
+
+    public String getSenhaMaquina() {
+        return senhaMaquina;
     }
 
     @Override

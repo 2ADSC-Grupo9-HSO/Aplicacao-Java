@@ -57,4 +57,13 @@ public class Requests {
 
         }
     }
+    
+    public void insertMaquinaDocker(JdbcTemplate conexao, String hostName, String senhaMaquina, String sistemaOperacional){
+        String sql = "INSERT INTO tbInfoMaquina (idInfoMaquina, hostName, senhaMaquina, sistemaOperacional) VALUES( 1, '" + hostName + "', '" + senhaMaquina + "', '" + sistemaOperacional + "');";
+        
+        String sql2 = "INSERT INTO tbMaquina (fkComponente, fkInfoMaquina) VALUES (1, 1), (2, 1), (3, 1);";
+        
+        conexao.execute(sql);
+        conexao.execute(sql2);
+    }
 }

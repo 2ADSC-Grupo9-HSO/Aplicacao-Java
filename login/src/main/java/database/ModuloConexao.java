@@ -13,10 +13,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 public class ModuloConexao {
 
-    private String ambiente = "Produção";
-    //private String ambiente = "Desenvolvimento";
+    private String ambiente;
 
     private JdbcTemplate connection;
+    
+    public ModuloConexao(String ambiente) {
+        this.ambiente = ambiente;
+    }
 
     public JdbcTemplate getConnection() {
 

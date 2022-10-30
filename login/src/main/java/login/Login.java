@@ -19,7 +19,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 public class Login extends javax.swing.JFrame {
 
-    private ModuloConexao conexao = new ModuloConexao();
+    private ModuloConexao conexaoMysql = new ModuloConexao("Desenvolvimento");
+    private ModuloConexao conexaoAzure = new ModuloConexao("Produção");
     private Requests requisicoes = new Requests();
 
     /**
@@ -49,15 +50,27 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void efetuarLogin(String user, String senha) {
-        JdbcTemplate conexao = this.conexao.getConnection();
+        JdbcTemplate conexaoMysql = this.conexaoMysql.getConnection();
+        JdbcTemplate conexaoAzure = this.conexaoAzure.getConnection();
 
-        Maquina maquina = this.requisicoes.loginSQL(conexao, user, senha);
+        Maquina maquinaMysql = this.requisicoes.loginSQL(conexaoMysql, user, senha);
+        Maquina maquinaAzure = this.requisicoes.loginSQL(conexaoAzure, user, senha);
 
-        if (maquina != null) {
+        if (maquinaMysql != null && maquinaAzure != null) {
 
-            new TelaDados(conexao, maquina).setVisible(true);
+            new TelaDados(conexaoMysql, maquinaMysql, conexaoAzure, maquinaAzure).setVisible(true);
             this.dispose();
 
+        } else if(maquinaMysql == null && maquinaAzure != null){
+            
+            this.requisicoes.insertMaquinaDocker(conexaoMysql, maquinaAzure.getHostName(), maquinaAzure.getSenhaMaquina(), maquinaAzure.getSistemaOperacional());
+            
+            Maquina maquinaMysql2 = this.requisicoes.loginSQL(conexaoMysql, user, senha);
+            
+            if(maquinaMysql2 != null){
+                new TelaDados(conexaoMysql, maquinaMysql2, conexaoAzure, maquinaAzure).setVisible(true);
+            }
+            
         } else {
             lblWarning.setText("Usuario ou senha incorreto");
             addPlaceholderStyle(txtUser);
