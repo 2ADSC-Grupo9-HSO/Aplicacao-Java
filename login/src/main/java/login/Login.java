@@ -9,6 +9,7 @@ import database.ModuloConexao;
 import database.Requests;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.Scanner;
 import javax.swing.JTextField;
 import looca.TelaDados;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -61,16 +62,16 @@ public class Login extends javax.swing.JFrame {
             new TelaDados(conexaoMysql, maquinaMysql, conexaoAzure, maquinaAzure).setVisible(true);
             this.dispose();
 
-        } else if(maquinaMysql == null && maquinaAzure != null){
-            
+        } else if (maquinaMysql == null && maquinaAzure != null) {
+
             this.requisicoes.insertMaquinaDocker(conexaoMysql, maquinaAzure.getHostName(), maquinaAzure.getSenhaMaquina(), maquinaAzure.getSistemaOperacional());
-            
+
             Maquina maquinaMysql2 = this.requisicoes.loginSQL(conexaoMysql, user, senha);
-            
-            if(maquinaMysql2 != null){
+
+            if (maquinaMysql2 != null) {
                 new TelaDados(conexaoMysql, maquinaMysql2, conexaoAzure, maquinaAzure).setVisible(true);
             }
-            
+
         } else {
             lblWarning.setText("Usuario ou senha incorreto");
             addPlaceholderStyle(txtUser);
@@ -399,12 +400,33 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
-        });
+        Scanner leitor = new Scanner(System.in);
+
+        System.out.println("Username:");
+        String username = leitor.nextLine();
+        System.out.println("Password");
+        String Password = leitor.nextLine();
+
+        if (username.isEmpty()) {
+
+            /* Create and display the form */
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    new Login().setVisible(true);
+                }
+            });
+        } else {
+
+            /* Create and display the form */
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    new Login().setVisible(false);
+                }
+            });
+            Login login = new Login();
+            login.efetuarLogin(username, Password);
+        }
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
