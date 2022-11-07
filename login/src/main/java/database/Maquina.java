@@ -12,14 +12,14 @@ import java.util.List;
  */
 public class Maquina {
 
-    private Integer idInfoMaquina;
+    private Integer idMaquina;
     private String hostName;
     private String senhaMaquina;
     private String sistemaOperacional;
     public List<HardMaquina> hardMaquina;
 
-    public void setIdInfoMaquina(Integer idInfoMaquina) {
-        this.idInfoMaquina = idInfoMaquina;
+    public void setIdMaquina(Integer idMaquina) {
+        this.idMaquina = idMaquina;
     }
 
     public void setHostName(String hostName) {
@@ -34,8 +34,8 @@ public class Maquina {
         this.sistemaOperacional = sistemaOperacional;
     }
 
-    public Integer getIdInfoMaquina() {
-        return this.idInfoMaquina;
+    public Integer getIdMaquina() {
+        return this.idMaquina;
     }
 
     public String getHostName() {
@@ -52,6 +52,6 @@ public class Maquina {
 
     @Override
     public String toString() {
-        return "idInfoMaquina: " + this.idInfoMaquina + "\nhostName: " + this.hostName + "\nsenhaMaquina: " + this.senhaMaquina;
+        return "idInfoMaquina: " + this.idMaquina + "\nhostName: " + this.hostName + "\nsenhaMaquina: " + this.senhaMaquina;
     }
 }

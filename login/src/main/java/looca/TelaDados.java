@@ -43,7 +43,7 @@ public class TelaDados extends javax.swing.JFrame {
 
                         Double processador = looca.getProcessador().getUso();
 
-                        requisicoes.insertSQL(conexaoMysql, componente.getIdMaquina(), processador);
+                        requisicoes.insertSQL(conexaoMysql, componente.getIdHardware(), processador);
 
                         System.out.println("processador");
 
@@ -51,7 +51,7 @@ public class TelaDados extends javax.swing.JFrame {
 
                         Double porcentUsoMemoria = looca.getMemoria().getEmUso() * 100.00 / looca.getMemoria().getTotal();
 
-                        requisicoes.insertSQL(conexaoMysql, componente.getIdMaquina(), porcentUsoMemoria);
+                        requisicoes.insertSQL(conexaoMysql, componente.getIdHardware(), porcentUsoMemoria);
 
                         System.out.println("memoria");
 
@@ -70,7 +70,7 @@ public class TelaDados extends javax.swing.JFrame {
                         Long volumeEmUso = volumeTotal - volumeDisponivel;
                         Double porcentVolumeEmUso = (volumeEmUso * 100.00 / volumeTotal);
 
-                        requisicoes.insertSQL(conexaoMysql, componente.getIdMaquina(), porcentVolumeEmUso);
+                        requisicoes.insertSQL(conexaoMysql, componente.getIdHardware(), porcentVolumeEmUso);
 
                         System.out.println("disco");
 
@@ -82,7 +82,7 @@ public class TelaDados extends javax.swing.JFrame {
 
                         Double processador = looca.getProcessador().getUso();
 
-                        requisicoes.insertSQL(conexaoAzure, componente.getIdMaquina(), processador);
+                        requisicoes.insertSQL(conexaoAzure, componente.getIdHardware(), processador);
 
                         System.out.println("processador");
 
@@ -90,7 +90,7 @@ public class TelaDados extends javax.swing.JFrame {
 
                         Double porcentUsoMemoria = looca.getMemoria().getEmUso() * 100.00 / looca.getMemoria().getTotal();
 
-                        requisicoes.insertSQL(conexaoAzure, componente.getIdMaquina(), porcentUsoMemoria);
+                        requisicoes.insertSQL(conexaoAzure, componente.getIdHardware(), porcentUsoMemoria);
 
                         System.out.println("memoria");
 
@@ -109,7 +109,7 @@ public class TelaDados extends javax.swing.JFrame {
                         Long volumeEmUso = volumeTotal - volumeDisponivel;
                         Double porcentVolumeEmUso = (volumeEmUso * 100.00 / volumeTotal);
 
-                        requisicoes.insertSQL(conexaoAzure, componente.getIdMaquina(), porcentVolumeEmUso);
+                        requisicoes.insertSQL(conexaoAzure, componente.getIdHardware(), porcentVolumeEmUso);
 
                         System.out.println("disco");
 

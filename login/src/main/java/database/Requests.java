@@ -16,11 +16,11 @@ public class Requests {
 
     public Maquina loginSQL(JdbcTemplate conexao, String user, String password) {
 
-        String sql = "SELECT idInfoMaquina, hostName, senhaMaquina FROM tbInfoMaquina WHERE hostName = ? AND senhaMaquina = ?";
+        String sql = "SELECT idMaquina, hostName, senhaMaquina FROM tbMaquina WHERE hostName = ? AND senhaMaquina = ?";
 
-        String sql2 = "SELECT idMaquina, fkComponente, valorTotal "
-                + "     FROM tbInfoMaquina "
-                + "JOIN tbMaquina ON idInfoMaquina = fkInfoMaquina "
+        String sql2 = "SELECT idHardware, fkComponente, valorTotal "
+                + "     FROM tbMaquina "
+                + "JOIN tbHardware ON idMaquina = fkMaquina "
                 + "WHERE hostName = ? AND senhaMaquina = ?";
 
         try {
