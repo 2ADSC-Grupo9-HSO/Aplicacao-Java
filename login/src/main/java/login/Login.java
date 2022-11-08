@@ -70,6 +70,7 @@ public class Login extends javax.swing.JFrame {
 
             if (maquinaMysql2 != null) {
                 new TelaDados(conexaoMysql, maquinaMysql2, conexaoAzure, maquinaAzure).setVisible(true);
+                this.dispose();
             }
 
         } else {
@@ -400,33 +401,12 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        Scanner leitor = new Scanner(System.in);
-
-        System.out.println("Username:");
-        String username = leitor.nextLine();
-        System.out.println("Password");
-        String Password = leitor.nextLine();
-
-        if (username.isEmpty()) {
-
-            /* Create and display the form */
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    new Login().setVisible(true);
-                }
-            });
-        } else {
-
-            /* Create and display the form */
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    new Login().setVisible(false);
-                }
-            });
-            Login login = new Login();
-            login.efetuarLogin(username, Password);
-        }
-
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Login().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -11,7 +11,6 @@ package database;
 public class HardMaquina {
     private Integer idHardware;
     private Integer fkComponente;
-    private String valorTotal;
 
     public void setIdHardware(Integer idHardware) {
         this.idHardware = idHardware;
@@ -19,10 +18,6 @@ public class HardMaquina {
 
     public void setFkComponente(Integer fkComponente) {
         this.fkComponente = fkComponente;
-    }
-
-    public void setValorTotal(String valorTotal) {
-        this.valorTotal = valorTotal;
     }
 
     public Integer getIdHardware() {
@@ -33,12 +28,8 @@ public class HardMaquina {
         return this.fkComponente;
     }
 
-    public String getValorTotal() {
-        return this.valorTotal;
-    }
-
     @Override
     public String toString() {
-        return "HardMaquina{" + "idMaquina=" + idHardware + ", fkComponente=" + fkComponente + ", valorTotal=" + valorTotal + '}';
+        return "HardMaquina{" + "idMaquina=" + idHardware + ", fkComponente=" + fkComponente + '}';
     }
 }

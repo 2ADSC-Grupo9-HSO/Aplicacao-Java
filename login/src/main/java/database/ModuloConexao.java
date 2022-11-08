@@ -43,7 +43,7 @@ public class ModuloConexao {
                 return this.connection;
 
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println("erro conexão Mysql" + e.getMessage());
                 return null;
             }
         } else if (this.ambiente.equals("Produção")) {
@@ -66,7 +66,7 @@ public class ModuloConexao {
                 return this.connection;
 
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println( "erro conexão Azure" + e.getMessage());
                 return null;
             }
         } else {

@@ -18,8 +18,8 @@ public class Requests {
 
         String sql = "SELECT idMaquina, hostName, senhaMaquina FROM tbMaquina WHERE hostName = ? AND senhaMaquina = ?";
 
-        String sql2 = "SELECT idHardware, fkComponente, valorTotal "
-                + "     FROM tbMaquina "
+        String sql2 = "SELECT idHardware, fkComponente "
+                + "FROM tbMaquina "
                 + "JOIN tbHardware ON idMaquina = fkMaquina "
                 + "WHERE hostName = ? AND senhaMaquina = ?";
 
