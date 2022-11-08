@@ -49,21 +49,31 @@ public class Requests {
         PreparedStatement stmt = null;
         String sql = "INSERT INTO tbHistorico (fkMaquina, valorRegistro) VALUES (" + fkMaquina + "," + registro + " )";
 
-        conexao.execute(sql);
-
         try {
+
+            conexao.execute(sql);
+
         } catch (Exception ex) {
+
             System.out.println("Ocorreu um problema ao inserir dados " + ex);
 
         }
     }
-    
-    public void insertMaquinaDocker(JdbcTemplate conexao, String hostName, String senhaMaquina, String sistemaOperacional){
-        String sql = "INSERT INTO tbInfoMaquina (idInfoMaquina, hostName, senhaMaquina, sistemaOperacional) VALUES( 1, '" + hostName + "', '" + senhaMaquina + "', '" + sistemaOperacional + "');";
-        
-        String sql2 = "INSERT INTO tbMaquina (fkComponente, fkInfoMaquina) VALUES (1, 1), (2, 1), (3, 1);";
-        
-        conexao.execute(sql);
-        conexao.execute(sql2);
+
+    public void insertMaquinaDocker(JdbcTemplate conexao, String hostName, String senhaMaquina, String sistemaOperacional) {
+        String sql = "INSERT INTO tbMaquina (idMaquina, hostName, senhaMaquina, sistemaOperacional) VALUES( 1, '" + hostName + "', '" + senhaMaquina + "', '" + sistemaOperacional + "');";
+
+        String sql2 = "INSERT INTO tbHardware (fkComponente, fkMaquina) VALUES (1, 1), (2, 1), (3, 1);";
+
+        try {
+            
+            conexao.execute(sql);
+            conexao.execute(sql2);
+            
+        } catch(Exception ex){
+            
+            System.out.println("Erro ao inserir dados no docker" + ex);
+            
+        }
     }
 }
