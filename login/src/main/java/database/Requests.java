@@ -47,7 +47,7 @@ public class Requests {
 
     public void insertSQL(JdbcTemplate conexao, Integer fkMaquina, Double registro) {
         PreparedStatement stmt = null;
-        String sql = "INSERT INTO tbHistorico (fkMaquina, valorRegistro) VALUES (" + fkMaquina + "," + registro + " )";
+        String sql = "INSERT INTO tbHistorico (fkHardware, valorRegistro) VALUES (" + fkMaquina + "," + registro + " )";
 
         try {
 
