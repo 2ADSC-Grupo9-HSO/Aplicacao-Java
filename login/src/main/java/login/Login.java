@@ -14,6 +14,11 @@ import javax.swing.JTextField;
 import looca.TelaDados;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /**
  *
  * @author rmacedo
@@ -83,7 +88,7 @@ public class Login extends javax.swing.JFrame {
         }
 
     }
-
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -376,7 +381,7 @@ public class Login extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws Exception{
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -407,6 +412,12 @@ public class Login extends javax.swing.JFrame {
                 new Login().setVisible(true);
             }
         });
+
+//          Runtime.getRuntime().exec("clear");
+
+           LoginCli log = new LoginCli();
+           log.cli();
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
