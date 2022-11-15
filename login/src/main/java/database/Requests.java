@@ -4,7 +4,11 @@
  */
 package database;
 
+import Maquina.MaquinaComProblema;
+import Maquina.HardMaquina;
+import Maquina.Maquina;
 import java.sql.*;
+import java.util.List;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -66,14 +70,76 @@ public class Requests {
         String sql2 = "INSERT INTO tbHardware (fkComponente, fkMaquina) VALUES (1, 1), (2, 1), (3, 1);";
 
         try {
-            
+
             conexao.execute(sql);
             conexao.execute(sql2);
-            
-        } catch(Exception ex){
-            
+
+        } catch (Exception ex) {
+
             System.out.println("Erro ao inserir dados no docker" + ex);
-            
+
         }
     }
+    
+    public MaquinaComProblema selectInovacao(JdbcTemplate conexao, Maquina maquina){
+        String sql = "select sum(cont) as \"qtd_maquinas_debilitadas\" from(\n" +
+"\n" +
+"\n" +
+"\n" +
+"       select count(contagem) as 'cont' from(\n" +
+"          select count(fkMaquina) as 'contagem' from tbHistorico as hi\n" +
+"           join tbHardware as hw on hw.idHardware = hi.fkHardware\n" +
+"           join tbMaquina as m on m.idMaquina = hw.fkMaquina\n" +
+"           where valorRegistro >= 95\n" +
+"           and hi.momentoRegistro > now() - interval 10 minute\n" +
+"           and hw.fkComponente = 1\n" +
+"           and m.idMaquina =" + maquina.getIdMaquina() +"\n" +
+"           group by hw.fkMaquina\n" +
+"        ) as tabela_comp_1\n" +
+"           where contagem > 1\n" +
+"\n" +
+"           union all\n" +
+"\n" +
+"        select count(contagem) as 'cont' from(\n" +
+"          select count(fkMaquina) as 'contagem' from tbHistorico as hi\n" +
+"           join tbHardware as hw on hw.idHardware = hi.fkHardware\n" +
+"           join tbMaquina as m on m.idMaquina = hw.fkMaquina\n" +
+"           where valorRegistro >= 90\n" +
+"           and hi.momentoRegistro > now() - interval 1 minute\n" +
+"           and hw.fkComponente = 2\n" +
+"           and m.idMaquina = " + maquina.getIdMaquina() +"\n" +
+"           group by hw.fkMaquina\n" +
+"        ) as tabela_comp_2\n" +
+"           where contagem > 5\n" +
+"\n" +
+"           union all\n" +
+"\n" +
+"        select count(contagem) as 'cont' from(\n" +
+"          select count(fkMaquina) as 'contagem' from tbHistorico as hi\n" +
+"           join tbHardware as hw on hw.idHardware = hi.fkHardware\n" +
+"           join tbMaquina as m on m.idMaquina = hw.fkMaquina\n" +
+"           where valorRegistro >= 99\n" +
+"           and hi.momentoRegistro > now() - interval 3 minute\n" +
+"           and hw.fkComponente = 3\n" +
+"           and m.idMaquina = " + maquina.getIdMaquina() +"\n" +
+"           group by hw.fkMaquina\n" +
+"        ) as tabela_comp_3\n" +
+"           where contagem > 6\n" +
+"\n" +
+"        ) as tabela_final;";
+        
+        try {
+            
+            MaquinaComProblema maquinaComProblema = conexao.queryForObject(sql, new BeanPropertyRowMapper<>(MaquinaComProblema.class));
+            
+            return maquinaComProblema;
+
+        } catch (Exception ex) {
+
+            System.out.println("Erro ao inserir dados no docker" + ex);
+
+            return null;
+        }
+    }
+    
 }

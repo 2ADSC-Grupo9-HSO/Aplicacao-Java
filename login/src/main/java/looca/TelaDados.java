@@ -6,8 +6,8 @@ package looca;
 
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.Volume;
-import database.HardMaquina;
-import database.Maquina;
+import Maquina.HardMaquina;
+import Maquina.Maquina;
 import database.Requests;
 import java.util.List;
 import java.util.Timer;

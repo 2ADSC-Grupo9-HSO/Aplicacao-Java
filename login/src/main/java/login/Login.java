@@ -4,7 +4,7 @@
  */
 package login;
 
-import database.Maquina;
+import Maquina.Maquina;
 import database.ModuloConexao;
 import database.Requests;
 import java.awt.Color;
@@ -413,10 +413,11 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-//          Runtime.getRuntime().exec("clear");
-
-           LoginCli log = new LoginCli();
-           log.cli();
+           LoginCli shell = new LoginCli();
+           
+           shell.executeCommand("clear");
+           
+           shell.cli();
 
     }
 
