@@ -4,6 +4,7 @@
  */
 package login;
 
+import looca.Log;
 import Maquina.Maquina;
 import database.ModuloConexao;
 import database.Requests;
@@ -88,7 +89,7 @@ public class Login extends javax.swing.JFrame {
         }
 
     }
- 
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -381,7 +382,7 @@ public class Login extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) throws Exception{
+    public static void main(String args[]) throws Exception {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -406,18 +407,21 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        /* Create and display the form */
+        //REGISTERING THE START OF APPLICATION IN USAGE LOG AT EACH RUN 
+        new Log("Uso", "Aplicação começou a rodar");
+        
+//        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);
             }
         });
 
-           LoginCli shell = new LoginCli();
-           
-           shell.executeCommand("clear");
-           
-           shell.cli();
+        LoginCli shell = new LoginCli();
+
+        shell.executeCommand("clear");
+
+        shell.cli();
 
     }
 
