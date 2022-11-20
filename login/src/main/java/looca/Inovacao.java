@@ -34,7 +34,9 @@ public class Inovacao {
         System.out.println(maq.getQtd_maquinas_debilitadas());
         
         if(maq.getQtd_maquinas_debilitadas() > 0){
-            shell.executeCommand("shutdown /h");
+            if(maquinaMysql.getHostName().indexOf("p") == 0){
+                shell.executeCommand("shutdown /h");
+            }
         } else{
             System.out.println("Maquina saudavel");
         }

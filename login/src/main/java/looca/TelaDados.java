@@ -57,20 +57,9 @@ public class TelaDados extends javax.swing.JFrame {
 
                     } else if (componente.getFkComponente().equals(3)) {
 
-                        List<Volume> volumes = new Looca().getGrupoDeDiscos().getVolumes();
+                        
 
-                        Long volumeTotal = 0L;
-                        Long volumeDisponivel = 0L;
-                        for (Volume v : volumes) {
-
-                            volumeTotal = v.getTotal();
-                            volumeDisponivel = v.getDisponivel();
-                        }
-
-                        Long volumeEmUso = volumeTotal - volumeDisponivel;
-                        Double porcentVolumeEmUso = (volumeEmUso * 100.00 / volumeTotal);
-
-                        requisicoes.insertSQL(conexaoMysql, componente.getIdHardware(), porcentVolumeEmUso);
+                        requisicoes.insertSQL(conexaoMysql, componente.getIdHardware(), //porcentVolumeEmUso);
 
                         System.out.println("disco");
 
