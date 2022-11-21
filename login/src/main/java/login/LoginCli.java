@@ -5,8 +5,7 @@
 package login;
 
 import com.github.britooo.looca.api.core.Looca;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
-import Maquina.Maquina;
+import maquina.Maquina;
 import database.ModuloConexao;
 import database.Requests;
 import java.io.BufferedReader;
@@ -16,7 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
-import looca.TelaDados;
+import captura.dados.TelaDados;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**

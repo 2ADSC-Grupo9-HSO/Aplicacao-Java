@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Maquina;
+package maquina;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,12 @@ public class Maquina {
     private String senhaMaquina;
     private String sistemaOperacional;
     public List<HardMaquina> hardMaquina;
+    public List<TopProcesso> TopProcessos;
+
+    public Maquina() {
+        this.hardMaquina = new ArrayList();
+        this.TopProcessos = new ArrayList();
+    }
 
     public void setIdMaquina(Integer idMaquina) {
         this.idMaquina = idMaquina;

@@ -4,21 +4,15 @@
  */
 package login;
 
-import looca.Log;
-import Maquina.Maquina;
+import maquina.Maquina;
 import database.ModuloConexao;
 import database.Requests;
 import java.awt.Color;
 import java.awt.Font;
-import java.util.Scanner;
 import javax.swing.JTextField;
-import looca.TelaDados;
+import captura.dados.TelaDados;
+import micro.servicos.Log;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  *
@@ -409,8 +403,8 @@ public class Login extends javax.swing.JFrame {
 
         //REGISTERING THE START OF APPLICATION IN USAGE LOG AT EACH RUN 
         new Log("Uso", "Aplicação começou a rodar");
-        
-//        /* Create and display the form */
+
+        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package looca;
+package micro.servicos;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -44,7 +44,7 @@ public class Log {
         SimpleDateFormat formataData = new SimpleDateFormat("yyyy-MM-dd-kk"); //você pode usar outras máscara
         String dataAtual = formataData.format(new Date());
 
-        File arquivo = new File(String.format("C:\\Users\\svaraujo\\OneDrive - Grupo VR\\Documentos\\%s-LOG-%s(1).txt", dataAtual, this.tipoArquivo.toUpperCase()));
+        File arquivo = new File(String.format("C:\\Users\\Rafael\\Documents\\%s-LOG-%s(1).txt", dataAtual, this.tipoArquivo.toUpperCase()));
 
         // VERIFICA O TAMANHO DO ARQUIVO EM BYTES E CRIA OUTRO COM NOVA VERSÃO CASO ULTRAPASSE O LIMITE
         Integer bytes = 100; // Reajustar o limite de tamanho para apresentação 
@@ -53,7 +53,7 @@ public class Log {
                 if (arquivo.length() < bytes) {
                     this.arq = new FileWriter(arquivo, true);
                 } else {
-                    arquivo = new File(String.format("C:\\Users\\svaraujo\\OneDrive - Grupo VR\\Documentos\\%s-LOG-%s(%d).txt", dataAtual, this.tipoArquivo.toUpperCase(), i));
+                    arquivo = new File(String.format("C:\\Users\\Rafael\\Documents\\%s-LOG-%s(%d).txt", dataAtual, this.tipoArquivo.toUpperCase(), i));
                     this.arq = new FileWriter(arquivo, true);
                 }
             }
@@ -83,7 +83,7 @@ public class Log {
 
         // BUSCA O ARQUIVO DE ACORDO COM A VERSÃO DESEJADA
         if (versaoLog <= 10) {
-            String arquivoEscolhido = String.format("C:\\Users\\svaraujo\\OneDrive - Grupo VR\\Documentos\\%s-LOG-%s(%d).txt", dataLog, tipoLog.toUpperCase(), versaoLog);
+            String arquivoEscolhido = String.format("C:\\Users\\Rafael\\Documents\\%s-LOG-%s(%d).txt", dataLog, tipoLog.toUpperCase(), versaoLog);
 
 //        System.out.println("tamanho em bytes");
 //        System.out.println(new File(arquivoEscolhido).length());
