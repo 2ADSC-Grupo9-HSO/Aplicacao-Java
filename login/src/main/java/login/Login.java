@@ -4,20 +4,15 @@
  */
 package login;
 
-import Maquina.Maquina;
+import maquina.Maquina;
 import database.ModuloConexao;
 import database.Requests;
 import java.awt.Color;
 import java.awt.Font;
-import java.util.Scanner;
 import javax.swing.JTextField;
-import looca.TelaDados;
+import captura.dados.TelaDados;
+import micro.servicos.Log;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  *
@@ -88,7 +83,7 @@ public class Login extends javax.swing.JFrame {
         }
 
     }
- 
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -381,7 +376,7 @@ public class Login extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) throws Exception{
+    public static void main(String args[]) throws Exception {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -406,6 +401,9 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
+        //REGISTERING THE START OF APPLICATION IN USAGE LOG AT EACH RUN 
+        new Log("Uso", "Aplicação começou a rodar");
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -413,11 +411,11 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-           LoginCli shell = new LoginCli();
-           
-           shell.executeCommand("clear");
-           
-           shell.cli();
+        LoginCli shell = new LoginCli();
+
+        shell.executeCommand("clear");
+
+        shell.cli();
 
     }
 

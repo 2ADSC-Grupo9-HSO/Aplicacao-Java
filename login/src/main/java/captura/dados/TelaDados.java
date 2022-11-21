@@ -2,16 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package looca;
+package captura.dados;
 
-import com.github.britooo.looca.api.core.Looca;
-import com.github.britooo.looca.api.group.discos.Volume;
-import Maquina.HardMaquina;
-import Maquina.Maquina;
+import maquina.Maquina;
 import database.Requests;
-import java.util.List;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import micro.servicos.Inovacao;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -20,89 +18,35 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 public class TelaDados extends javax.swing.JFrame {
 
-    private Requests requisicoes = new Requests();
-    Looca looca = new Looca();
+    private Requests requisicoes;
+    private Inovacao inovacao;
 
     /**
      * Creates new form TelaDados
      */
     public TelaDados(JdbcTemplate conexaoMysql, Maquina maquinaMysql, JdbcTemplate conexaoAzure, Maquina maquinaAzure) {
         initComponents();
+        this.requisicoes = new Requests();
+        this.inovacao = new Inovacao(conexaoMysql, maquinaMysql);
 
         this.inserirDados(conexaoMysql, maquinaMysql, conexaoAzure, maquinaAzure);
     }
 
     private void inserirDados(JdbcTemplate conexaoMysql, Maquina maquinaMysql, JdbcTemplate conexaoAzure, Maquina maquinaAzure) {
-        int delay = 2000;   // tempo de espera antes da 1ª execução da tarefa.
-        int interval = 10000;  // intervalo no qual a tarefa será executada.
+        int delay = 2000;
+        int interval = 10000;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                for (HardMaquina componente : maquinaMysql.hardMaquina) {
-                    if (componente.getFkComponente().equals(1)) {
 
-                        Double processador = looca.getProcessador().getUso();
+                new EnviaDados().enviarDados(maquinaMysql, conexaoMysql);
+                //new EnviaDados().enviarDados(maquinaAzure, conexaoAzure);
 
-                        requisicoes.insertSQL(conexaoMysql, componente.getIdHardware(), processador);
-
-                        System.out.println("processador");
-
-                    } else if (componente.getFkComponente().equals(2)) {
-
-                        Double porcentUsoMemoria = looca.getMemoria().getEmUso() * 100.00 / looca.getMemoria().getTotal();
-
-                        requisicoes.insertSQL(conexaoMysql, componente.getIdHardware(), porcentUsoMemoria);
-
-                        System.out.println("memoria");
-
-                    } else if (componente.getFkComponente().equals(3)) {
-
-                        
-
-                        requisicoes.insertSQL(conexaoMysql, componente.getIdHardware(), //porcentVolumeEmUso);
-
-                        System.out.println("disco");
-
-                    }
-                }
-
-                for (HardMaquina componente : maquinaAzure.hardMaquina) {
-                    if (componente.getFkComponente().equals(1)) {
-
-                        Double processador = looca.getProcessador().getUso();
-
-                        requisicoes.insertSQL(conexaoAzure, componente.getIdHardware(), processador);
-
-                        System.out.println("processador");
-
-                    } else if (componente.getFkComponente().equals(2)) {
-
-                        Double porcentUsoMemoria = looca.getMemoria().getEmUso() * 100.00 / looca.getMemoria().getTotal();
-
-                        requisicoes.insertSQL(conexaoAzure, componente.getIdHardware(), porcentUsoMemoria);
-
-                        System.out.println("memoria");
-
-                    } else if (componente.getFkComponente().equals(3)) {
-
-                        List<Volume> volumes = new Looca().getGrupoDeDiscos().getVolumes();
-
-                        Long volumeTotal = 0L;
-                        Long volumeDisponivel = 0L;
-                        for (Volume v : volumes) {
-
-                            volumeTotal = v.getTotal();
-                            volumeDisponivel = v.getDisponivel();
-                        }
-
-                        Long volumeEmUso = volumeTotal - volumeDisponivel;
-                        Double porcentVolumeEmUso = (volumeEmUso * 100.00 / volumeTotal);
-
-                        requisicoes.insertSQL(conexaoAzure, componente.getIdHardware(), porcentVolumeEmUso);
-
-                        System.out.println("disco");
-
-                    }
+                try {
+                    inovacao.atualizaProcessosClasse();
+                    inovacao.repararTotem();
+                } catch (IOException ex) {
+                    System.out.println("Erro" + ex);
                 }
 
             }
