@@ -402,20 +402,21 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
 
         //REGISTERING THE START OF APPLICATION IN USAGE LOG AT EACH RUN 
-        new Log("Uso", "Aplicação começou a rodar");
-
+        new Log("Uso", "Aplicação começou a rodar"); // dar permissão para criação de log na cli
+        
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);
             }
         });
-
+        
         LoginCli shell = new LoginCli();
-
-        shell.executeCommand("clear");
-
+        shell.executeCommand("clear"); //arrumar o clear
+       
         shell.cli();
+            
 
     }
 
