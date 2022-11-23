@@ -10,6 +10,7 @@ import maquina.Maquina;
 import maquina.TopProcesso;
 import com.github.britooo.looca.api.group.processos.Processo;
 import java.sql.*;
+import java.util.Map;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -142,24 +143,24 @@ public class Requests {
             return null;
         }
     }
-    
-    public void selectProcessos(JdbcTemplate conexao, Maquina maquina){
-        
-        String sql = "SELECT idProcesso, chaveAtivacao, pid FROM processos WHERE fkMaquina = ?";
-        
+
+    public void selectProcessos(JdbcTemplate conexao, Maquina maquina) {
+
+        String sql = "SELECT idProcesso, chaveAtivacao, pid FROM tbProcessos WHERE fkMaquina = ?";
+
         try {
             maquina.TopProcessos = conexao.query(sql, new BeanPropertyRowMapper<>(TopProcesso.class), maquina.getIdMaquina());
-            
-        } catch (Exception ex){
-            
+
+        } catch (Exception ex) {
+
             System.out.println("Não foi possivel retornar os dados da lista " + ex);
-            
+
         }
     }
 
     public void insertProcessos(JdbcTemplate conexao, Processo processo, Integer fkMaquina) {
 
-        String sql = String.format("INSERT INTO processos (fkMaquina, pid, nomeProcesso, consumoRam, chaveAtivacao) VALUES (%d, '%d', '%s', " + processo.getUsoMemoria() + ", '0')", fkMaquina, processo.getPid(), processo.getNome());
+        String sql = String.format("INSERT INTO tbProcessos (fkMaquina, pid, nomeProcesso, consumoRam, chaveAtivacao) VALUES (%d, '%d', '%s', " + processo.getUsoMemoria() + ", '0')", fkMaquina, processo.getPid(), processo.getNome());
 
         try {
 
@@ -174,7 +175,7 @@ public class Requests {
 
     public void atualizarProcessos(JdbcTemplate conexao, Processo processo, Integer id) {
 
-        String sql = String.format("UPDATE processos SET pid =  '%d', nomeProcesso = '%s', consumoRam = " + processo.getUsoMemoria() + ", chaveAtivacao = 0 WHERE  idProcesso = %s", processo.getPid(), processo.getNome(), id);
+        String sql = String.format("UPDATE tbProcessos SET pid =  '%d', nomeProcesso = '%s', consumoRam = " + processo.getUsoMemoria() + ", chaveAtivacao = 0 WHERE  idProcesso = %s", processo.getPid(), processo.getNome(), id);
 
         try {
 
@@ -187,4 +188,33 @@ public class Requests {
         }
     }
 
+    public Map<String, Object> selectChaveMaquina(JdbcTemplate conexao, Integer idMaquina) {
+        Map<String, Object> retornoChave;
+        String sql = String.format("SELECT chaveAtivacao FROM tbMaquina WHERE idMaquina = %d", idMaquina); 
+
+        try {
+            retornoChave = conexao.queryForMap(sql);
+            return retornoChave;
+
+        } catch (Exception ex) {
+
+            System.out.println("Não foi possivel retornar os dados da chave " + ex);
+            return null;
+        }
+    }
+
+    public void atualizarChaveMaquina(JdbcTemplate conexao, Integer idMaquina) {
+
+        String sql = String.format("UPDATE tbMaquina SET chaveAtivacao = 0 WHERE idMaquina = %d", idMaquina);
+
+        try {
+
+            conexao.execute(sql);
+
+        } catch (Exception ex) {
+
+            System.out.println("Erro ao atualizar chaveAtivacao" + ex);
+
+        }
+    }
 }

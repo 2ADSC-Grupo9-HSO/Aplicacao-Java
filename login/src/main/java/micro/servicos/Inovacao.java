@@ -14,6 +14,7 @@ import database.Requests;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import login.LoginCli;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -97,6 +98,26 @@ public class Inovacao {
             for (int i = 0; i < maioresProcessos.size(); i++) {
                 new Requests().atualizarProcessos(this.conexao, maioresProcessos.get(i), this.maquina.TopProcessos.get(i).getIdProcesso());
             }
+        }
+    }
+
+    public void reiniciarMaquinaRemoto() throws IOException {
+        Map<String, Object> chave = new Requests().selectChaveMaquina(this.conexao, this.maquina.getIdMaquina());
+
+        String chaveFormatada = chave.toString();
+
+        int posicaoInical = chaveFormatada.indexOf('=');
+        int posicaoFinal = chaveFormatada.indexOf('}');
+        if (posicaoInical > 0) {
+
+            chaveFormatada = chaveFormatada.substring(posicaoInical + 1, posicaoFinal);
+        }
+
+        System.out.println(chaveFormatada);
+
+        if (chaveFormatada.equals("1")) {
+            new Requests().atualizarChaveMaquina(this.conexao, this.maquina.getIdMaquina());
+            shell.executeCommand("shutdown /r");
         }
     }
 }

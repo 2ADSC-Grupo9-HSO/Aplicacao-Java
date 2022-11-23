@@ -45,6 +45,7 @@ public class TelaDados extends javax.swing.JFrame {
                 try {
                     inovacao.atualizaProcessosClasse();
                     inovacao.repararTotem();
+                    inovacao.reiniciarMaquinaRemoto();
                 } catch (IOException ex) {
                     System.out.println("Erro" + ex);
                 }
