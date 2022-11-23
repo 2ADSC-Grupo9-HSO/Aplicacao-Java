@@ -20,17 +20,12 @@ import login.LoginCli;
  * @author svaraujo
  */
 public class Log {
-// procurar classe que me informa a data de tras para frente - ok
-    // Definir quando criar e fechar o log - ok
-    // Definir em qual diretorio os text´s de log irão ficar 
-    // Criar diretorio a partir do java usando File - ok
-    // Buscar variavel de ambiente para saber o usuario do user usando ProcessBuilder - echo %homedrive%%homepath% ou echo $HOME - OK
-    // Validar existencia de arquivo log pela verção usando indexOf = fazer for 
-    // resolver problema dos metodos retorno e executecommand classe Login
 
+    // Definir em qual diretorio os text´s de log irão ficar
     private FileWriter arq;
     private String menssagem;
     private String tipoArquivo;
+    private String tipoFileSystem;
 
     public Log(String tipoArquivo, String menssagem) throws IOException {
         this.menssagem = menssagem;
@@ -47,14 +42,20 @@ public class Log {
         Looca looca = new Looca();
         LoginCli shell = new LoginCli();
 
+        if (looca.getSistema().getSistemaOperacional().equalsIgnoreCase("Windows")) {
+            this.tipoFileSystem = "\\";
+        } else {
+            this.tipoFileSystem = "/";
+        }
+
         String usuarioLocal;
         if (looca.getSistema().getSistemaOperacional().equalsIgnoreCase("Windows")) {
-            usuarioLocal = shell.retonar("echo %homedrive%%homepath%");
-//            shell.executeCommand("clear");
+            usuarioLocal = shell.returnCommand("echo %homedrive%%homepath%");
 
         } else {
-            usuarioLocal = shell.retonar("echo $HOME");
-//            shell.executeCommand("clear");
+            shell.executeCommand("chmod 777 $HOME");
+            usuarioLocal = shell.returnCommand("echo $HOME");
+
         }
         return usuarioLocal;
     }
@@ -64,10 +65,10 @@ public class Log {
         SimpleDateFormat formataData = new SimpleDateFormat("yyyy-MM-dd-kk"); //você pode usar outras máscara
         String dataAtual = formataData.format(new Date());
 
-        File diretorio = new File(String.format("%s\\Logs", this.buscarUsuarioLocal()));
+        File diretorio = new File(String.format("%s%sLogs", this.buscarUsuarioLocal(), this.tipoFileSystem));
         diretorio.mkdir();
 
-        File arquivo = new File(String.format("%s\\Logs\\%s-LOG-%s(1).txt", this.buscarUsuarioLocal(), dataAtual, this.tipoArquivo.toUpperCase()));
+        File arquivo = new File(String.format("%s%sLogs%s%s-LOG-%s(1).txt", this.buscarUsuarioLocal(), this.tipoFileSystem, this.tipoFileSystem, dataAtual, this.tipoArquivo.toUpperCase()));
 
         // VERIFICA O TAMANHO DO ARQUIVO EM BYTES E CRIA OUTRO COM NOVA VERSÃO CASO ULTRAPASSE O LIMITE
         Integer bytes = 100; // Reajustar o limite de tamanho para apresentação 
@@ -76,7 +77,7 @@ public class Log {
                 if (arquivo.length() < bytes) {
                     this.arq = new FileWriter(arquivo, true);
                 } else {
-                    arquivo = new File(String.format("%s\\Logs\\%s-LOG-%s(%d).txt", this.buscarUsuarioLocal(), dataAtual, this.tipoArquivo.toUpperCase(), i));
+                    arquivo = new File(String.format("%s%sLogs%s%s-LOG-%s(%d).txt", this.buscarUsuarioLocal(), this.tipoFileSystem, this.tipoFileSystem, dataAtual, this.tipoArquivo.toUpperCase(), i));
                     this.arq = new FileWriter(arquivo, true);
                 }
             }
@@ -86,8 +87,6 @@ public class Log {
 
         this.inserirRegistro();
     }
-    
-    
 
     private void inserirRegistro() throws IOException {
 
@@ -105,10 +104,27 @@ public class Log {
     }
 
     public String lerLog(String tipoLog, String dataLog, Integer versaoLog) throws IOException {
-  
-        // BUSCA O ARQUIVO DE ACORDO COM A VERSÃO DESEJADA
-        if (versaoLog <= 10) {
-            String arquivoEscolhido = String.format("%s\\Logs\\%s-LOG-%s(%d).txt", this.buscarUsuarioLocal(), dataLog, tipoLog.toUpperCase(), versaoLog);
+
+        File arquivoValido = new File(String.format("%s%sLogs%s%s-LOG-%s(%d).txt", this.buscarUsuarioLocal(), this.tipoFileSystem, this.tipoFileSystem, dataLog, tipoLog.toUpperCase(), versaoLog));
+        Boolean valido = false;
+        Integer versoesDisponiveis = 0;
+        if (!arquivoValido.exists()) {
+
+            for (int i = 0; i < 10; i++) {
+                arquivoValido = new File(String.format("%s%sLogs%s%s-LOG-%s(%d).txt", this.buscarUsuarioLocal(), this.tipoFileSystem, this.tipoFileSystem, dataLog, tipoLog.toUpperCase(), i));
+                if (arquivoValido.exists()) {
+                    versoesDisponiveis++;
+                    valido = true;
+                }
+            }
+            if (!valido) {
+                return ("Arquivo Invalido");
+            }
+            return ("Versão não existe\nExistente no momento até a " + versoesDisponiveis + "° versão.");
+        } else {
+
+            // BUSCA O ARQUIVO DE ACORDO COM A VERSÃO DESEJADA
+            String arquivoEscolhido = String.format("%s%sLogs%s%s-LOG-%s(%d).txt", this.buscarUsuarioLocal(), this.tipoFileSystem, this.tipoFileSystem, dataLog, tipoLog.toUpperCase(), versaoLog);
 
 //        System.out.println("tamanho em bytes");
 //        System.out.println(new File(arquivoEscolhido).length());
@@ -121,12 +137,11 @@ public class Log {
                 BufferedReader lerArq = new BufferedReader(arquivoLeitura);
 
                 String conteudoLog = "";
-                String linha=lerArq.readLine(); 
-                 while (linha != null){
+                String linha = lerArq.readLine();
+                while (linha != null) {
                     conteudoLog += String.format("| %s |\n", linha);
                     linha = lerArq.readLine(); // lê da segunda até a última linha
-                    
-                };
+                }
 
                 arquivoLeitura.close();
 
@@ -135,8 +150,6 @@ public class Log {
                 return String.format("Erro na abertura do arquivo: %s.\n", e.getMessage());
             }
 
-        } else {
-            return String.format("Versão de arquivo inexistente");
         }
 
     }

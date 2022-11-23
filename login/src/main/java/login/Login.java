@@ -18,7 +18,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  *
  * @author rmacedo
  */
-public class Login extends javax.swing.JFrame {
+public class Login extends javax.swing.JFrame{
 
     private ModuloConexao conexaoMysql = new ModuloConexao("Desenvolvimento");
     private ModuloConexao conexaoAzure = new ModuloConexao("Produção");
@@ -401,9 +401,6 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        //REGISTERING THE START OF APPLICATION IN USAGE LOG AT EACH RUN 
-        new Log("Uso", "Aplicação começou a rodar"); // dar permissão para criação de log na cli
-        
         
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -411,13 +408,14 @@ public class Login extends javax.swing.JFrame {
                 new Login().setVisible(true);
             }
         });
-        
-        LoginCli shell = new LoginCli();
-        shell.executeCommand("clear"); //arrumar o clear
        
+        LoginCli shell = new LoginCli();
+        shell.executeCommand("clear");
+        
+        //REGISTERING THE START OF APPLICATION IN USAGE LOG AT EACH RUN 
+        new Log("Uso", "Aplicação começou a rodar");
+        
         shell.cli();
-            
-
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

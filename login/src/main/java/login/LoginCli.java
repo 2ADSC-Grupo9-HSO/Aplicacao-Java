@@ -23,11 +23,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @author svaraujo
  */
 public class LoginCli {
-    
+
     private ModuloConexao conexaoMysql = new ModuloConexao("Desenvolvimento");
     private ModuloConexao conexaoAzure = new ModuloConexao("Produção");
     private Requests requisicoes = new Requests();
-    
+
     public void cli() {
         Scanner leitor = new Scanner(System.in);
         String username;
@@ -36,45 +36,45 @@ public class LoginCli {
             System.out.println("Username:");
             username = leitor.nextLine();
         } while (username.isEmpty());
-        
+
         do {
             System.out.println("Password");
             Password = leitor.nextLine();
         } while (Password.isEmpty());
         this.efetuarLogin(username, Password);
     }
-    
+
     private void efetuarLogin(String user, String senha) {
         JdbcTemplate conexaoMysql = this.conexaoMysql.getConnection();
         JdbcTemplate conexaoAzure = this.conexaoAzure.getConnection();
-        
+
         Maquina maquinaMysql = this.requisicoes.loginSQL(conexaoMysql, user, senha);
         Maquina maquinaAzure = this.requisicoes.loginSQL(conexaoAzure, user, senha);
-        
+
         if (maquinaMysql != null && maquinaAzure != null) {
-            
+
             new TelaDados(conexaoMysql, maquinaMysql, conexaoAzure, maquinaAzure).setVisible(false);
-            
+
         } else if (maquinaMysql == null && maquinaAzure != null) {
-            
+
             this.requisicoes.insertMaquinaDocker(conexaoMysql, maquinaAzure.getHostName(), maquinaAzure.getSenhaMaquina(), maquinaAzure.getSistemaOperacional());
-            
+
             Maquina maquinaMysql2 = this.requisicoes.loginSQL(conexaoMysql, user, senha);
-            
+
             if (maquinaMysql2 != null) {
                 new TelaDados(conexaoMysql, maquinaMysql2, conexaoAzure, maquinaAzure).setVisible(false);
             }
-            
+
         }
-        
+
     }
-    
+
     public void executeCommand(final String command) throws IOException {
-        
+
         final ArrayList<String> commands = new ArrayList<String>();
-        
+
         Looca looca = new Looca();
-        
+
         if (looca.getSistema().getSistemaOperacional().equalsIgnoreCase("Windows")) {
 //          No Windão
             commands.add("cmd");
@@ -85,40 +85,35 @@ public class LoginCli {
             commands.add("/bin/bash");
             commands.add("-c");
             commands.add(command);
-            
+
         }
-        
+
         BufferedReader br = null;
-        String retorno = "";
         try {
             final ProcessBuilder p = new ProcessBuilder(commands);
             final Process process = p.start();
             final InputStream is = process.getInputStream();
             final InputStreamReader isr = new InputStreamReader(is);
             br = new BufferedReader(isr);
-            
+
             String line;
             while ((line = br.readLine()) != null) {
-                System.out.println("retorno do comando shell: "+line);
-//            retorno = line;
-                this.retonar(line);
+                System.out.println("retorno do comando shell: " + line);
             }
-            
+
         } catch (IOException ioe) {
-//            log.severe("Erro ao executar comando shell" + ioe.getMessage());
-            throw ioe;
+            System.out.println("Erro ao executar comando shell" + ioe.getMessage());
         } finally {
             secureClose(br);
         }
-//        return retorno;
     }
-    
-    public String retonar(String command) throws IOException{
-        
+
+    public String returnCommand(String command) throws IOException {
+
         final ArrayList<String> commands = new ArrayList<String>();
-        
+
         Looca looca = new Looca();
-        
+
         if (looca.getSistema().getSistemaOperacional().equalsIgnoreCase("Windows")) {
 //          No Windão
             commands.add("cmd");
@@ -129,9 +124,9 @@ public class LoginCli {
             commands.add("/bin/bash");
             commands.add("-c");
             commands.add(command);
-            
+
         }
-        
+
         BufferedReader br = null;
         String retorno = "";
         try {
@@ -140,32 +135,30 @@ public class LoginCli {
             final InputStream is = process.getInputStream();
             final InputStreamReader isr = new InputStreamReader(is);
             br = new BufferedReader(isr);
-            
+
             String line;
             while ((line = br.readLine()) != null) {
-               
-            retorno = line;
-                this.retonar(line);
+                retorno = line;
             }
-            
+
         } catch (IOException ioe) {
-//            log.severe("Erro ao executar comando shell" + ioe.getMessage());
-            throw ioe;
+            System.out.println("Erro ao executar comando shell" + ioe.getMessage());
         } finally {
             secureClose(br);
+            return retorno;
         }
-        return retorno;
         
+
     }
-    
+
     private void secureClose(final Closeable resource) {
         try {
             if (resource != null) {
                 resource.close();
             }
         } catch (IOException ex) {
-            //log.severe("Erro = " + ex.getMessage());
+            System.out.println("Erro = " + ex.getMessage());
         }
     }
-    
+
 }
