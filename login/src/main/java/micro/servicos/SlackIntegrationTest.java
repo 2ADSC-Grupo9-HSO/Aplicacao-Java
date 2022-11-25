@@ -13,7 +13,10 @@ import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.Disco;
 import com.github.britooo.looca.api.group.discos.Volume;
 import com.github.britooo.looca.api.util.Conversor;
+import database.ModuloConexao;
+import database.Requests;
 import java.util.List;
+import maquina.MaquinaComProblema;
 
 /**
  *
@@ -32,9 +35,12 @@ public class SlackIntegrationTest {
     }
 
     public static void sendMessageProcessadorToSlack(String mensagem) {
-        Looca looca = new Looca();
-
-        if (looca.getProcessador().getUso() >= 70.0) {
+        CalculosUso calculo = new CalculosUso();
+        Requests requests = new Requests();
+        maquina.Maquina maquina = requests.loginSQL(new ModuloConexao("Produção").getConnection(), "pc1", "123");
+        MaquinaComProblema maq1 = requests.selectMaquinaDanificada(new ModuloConexao("Produção").getConnection(), maquina);
+        
+        if (maq1.getQtd_maquinas_debilitadas() != 1) {
             try {
                 StringBuilder msgbuilder = new StringBuilder();
                 msgbuilder.append(mensagem);
@@ -49,9 +55,12 @@ public class SlackIntegrationTest {
     }
 
     public static void sendMessageRamToSlack(String mensagem) {
-        Looca looca = new Looca();
+        CalculosUso calculo = new CalculosUso();
+        Requests requests = new Requests();
+        maquina.Maquina maquina = requests.loginSQL(new ModuloConexao("Produção").getConnection(), "pc1", "123");
+        MaquinaComProblema maq2 = requests.selectMaquinaDanificada(new ModuloConexao("Produção").getConnection(), maquina);
 
-        if (looca.getMemoria().getEmUso() >= 70.0) {
+        if (maq2.getQtd_maquinas_debilitadas() != 1) {
             try {
                 StringBuilder msgbuilder = new StringBuilder();
                 msgbuilder.append(mensagem);
@@ -66,11 +75,9 @@ public class SlackIntegrationTest {
     }
 
     public static void sendMessageDiscoToSlack(String mensagem) {
-        Looca looca = new Looca();
+        CalculosUso calculo = new CalculosUso();
 
-        Double disco = 100.0;
-
-        if (disco >= 99.0) {
+        if (calculo.getPorcentagemDisco() <= 85) {
             try {
                 StringBuilder msgbuilder = new StringBuilder();
                 msgbuilder.append(mensagem);
