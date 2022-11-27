@@ -17,6 +17,8 @@ import database.ModuloConexao;
 import database.Requests;
 import java.util.List;
 import maquina.MaquinaComProblema;
+import maquina.Maquina;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  *
@@ -28,19 +30,11 @@ public class SlackIntegrationTest {
     private static String OAuthToken = "xoxb-4299325918501-4327140979589-PiJXduaP4u6kRqzQGQv2F53C";
     private static String SlackChannel = "hsochannel";
 
-    public static void main(String[] args) {
-        sendMessageProcessadorToSlack("Valor de processador ultrapassado!");
-        sendMessageRamToSlack("Valor de memória RAM ultrapassada!");
-        sendMessageDiscoToSlack("Valor de disco ultrapassado!");
-    }
-
-    public static void sendMessageProcessadorToSlack(String mensagem) {
-        CalculosUso calculo = new CalculosUso();
+    public static void sendMessageProcessadorToSlack(String mensagem, JdbcTemplate conexao, Maquina maquina) {
         Requests requests = new Requests();
-        maquina.Maquina maquina = requests.loginSQL(new ModuloConexao("Produção").getConnection(), "pc1", "123");
-        MaquinaComProblema maq1 = requests.selectMaquinaDanificada(new ModuloConexao("Produção").getConnection(), maquina);
+        MaquinaComProblema maq2 = requests.selectMaquinaDanificada(conexao, maquina);
         
-        if (maq1.getQtd_maquinas_debilitadas() != 1) {
+        if (maq2.getQtd_maquinas_debilitadas() == 1) {
             try {
                 StringBuilder msgbuilder = new StringBuilder();
                 msgbuilder.append(mensagem);
@@ -54,13 +48,11 @@ public class SlackIntegrationTest {
         }
     }
 
-    public static void sendMessageRamToSlack(String mensagem) {
-        CalculosUso calculo = new CalculosUso();
+    public static void sendMessageRamToSlack(String mensagem, JdbcTemplate conexao, Maquina maquina) {
         Requests requests = new Requests();
-        maquina.Maquina maquina = requests.loginSQL(new ModuloConexao("Produção").getConnection(), "pc1", "123");
-        MaquinaComProblema maq2 = requests.selectMaquinaDanificada(new ModuloConexao("Produção").getConnection(), maquina);
+        MaquinaComProblema maq2 = requests.selectMaquinaDanificada(conexao, maquina);
 
-        if (maq2.getQtd_maquinas_debilitadas() != 1) {
+        if (maq2.getQtd_maquinas_debilitadas() == 1) {
             try {
                 StringBuilder msgbuilder = new StringBuilder();
                 msgbuilder.append(mensagem);
@@ -77,7 +69,7 @@ public class SlackIntegrationTest {
     public static void sendMessageDiscoToSlack(String mensagem) {
         CalculosUso calculo = new CalculosUso();
 
-        if (calculo.getPorcentagemDisco() <= 85) {
+        if (calculo.getPorcentagemDisco() >= 85) {
             try {
                 StringBuilder msgbuilder = new StringBuilder();
                 msgbuilder.append(mensagem);

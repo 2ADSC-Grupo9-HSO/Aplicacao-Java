@@ -61,7 +61,7 @@ public class Inovacao {
             if (processo.getChaveAtivacao().equals("1")) {
                 System.out.println("Caiu aqui ");
                 if (looca.getSistema().getSistemaOperacional().equalsIgnoreCase("Windows")) {
-                    shell.executeCommand("taskkill /F /PID " + processo.getPid());
+                    shell.executeCommand("taskkill /F /PID" + processo.getPid());
                 } else {
                     shell.executeCommand("kill -9 " + processo.getPid());
                 }

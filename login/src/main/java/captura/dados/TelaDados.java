@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import micro.servicos.Inovacao;
+import static micro.servicos.SlackIntegrationTest.sendMessageDiscoToSlack;
+import static micro.servicos.SlackIntegrationTest.sendMessageProcessadorToSlack;
+import static micro.servicos.SlackIntegrationTest.sendMessageRamToSlack;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -27,21 +30,32 @@ public class TelaDados extends javax.swing.JFrame {
     public TelaDados(JdbcTemplate conexaoMysql, Maquina maquinaMysql, JdbcTemplate conexaoAzure, Maquina maquinaAzure) {
         initComponents();
         this.requisicoes = new Requests();
-        this.inovacao = new Inovacao(conexaoMysql, maquinaMysql);
+        this.inovacao = new Inovacao(conexaoAzure, maquinaAzure);
 
         this.inserirDados(conexaoMysql, maquinaMysql, conexaoAzure, maquinaAzure);
     }
 
     private void inserirDados(JdbcTemplate conexaoMysql, Maquina maquinaMysql, JdbcTemplate conexaoAzure, Maquina maquinaAzure) {
         int delay = 2000;
-        int interval = 10000;
+        int interval = 30000;
+        int delay2 = 2000;
+        int interval2 = 500;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
 
-                new EnviaDados().enviarDados(maquinaMysql, conexaoMysql);
-                //new EnviaDados().enviarDados(maquinaAzure, conexaoAzure);
+               new EnviaDados().enviarDados(maquinaMysql, conexaoMysql);
+               new EnviaDados().enviarDados(maquinaAzure, conexaoAzure);
 
+                sendMessageProcessadorToSlack("Valor de processador ultrapassado!", conexaoAzure, maquinaAzure);
+                sendMessageRamToSlack("Valor de memória RAM ultrapassada!", conexaoAzure, maquinaAzure);
+                sendMessageDiscoToSlack("Valor de disco ultrapassado!");
+            }
+        }, delay, interval);
+
+        Timer timer2 = new Timer();
+        timer2.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
                 try {
                     inovacao.atualizaProcessosClasse();
                     inovacao.repararTotem();
@@ -49,9 +63,10 @@ public class TelaDados extends javax.swing.JFrame {
                 } catch (IOException ex) {
                     System.out.println("Erro" + ex);
                 }
-
             }
-        }, delay, interval);
+        }, delay2, interval2);
+
+        System.out.println("Sai do timer");
     }
 
     /**

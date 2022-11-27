@@ -7,6 +7,7 @@ package captura.dados;
 import maquina.HardMaquina;
 import maquina.Maquina;
 import database.Requests;
+import java.util.concurrent.ThreadLocalRandom;
 import micro.servicos.CalculosUso;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -37,8 +38,10 @@ public class EnviaDados {
             } else if (componente.getFkComponente().equals(3)) {
                 
                 Double porcentVolumeEmUso = new CalculosUso().getPorcentagemDisco();
+                
+                Double discoSorteado = ThreadLocalRandom.current().nextDouble(20.00, 89.00);
 
-                 new Requests().insertSQL(conexao, componente.getIdHardware(), porcentVolumeEmUso);
+                 new Requests().insertSQL(conexao, componente.getIdHardware(), discoSorteado);
 
                 System.out.println("disco");
 
