@@ -1,0 +1,16 @@
+captura\dados\EnviaDados.class
+maquina\Maquina.class
+login\Main.class
+maquina\MaquinaComProblema.class
+maquina\HardMaquina.class
+micro\servicos\SlackIntegrationTest.class
+database\Requests.class
+login\LoginCli.class
+captura\dados\TelaDados$1.class
+maquina\TopProcesso.class
+micro\servicos\Log.class
+captura\dados\TelaDados.class
+database\ModuloConexao.class
+micro\servicos\CalculosUso.class
+captura\dados\TelaDados$2.class
+micro\servicos\Inovacao.class

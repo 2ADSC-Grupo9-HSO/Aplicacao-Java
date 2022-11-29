@@ -13,20 +13,20 @@ import java.util.List;
  * @author rmacedo
  */
 public class CalculosUso {
-    
-    public Double getPorcentagemProcessador(){
+
+    public Double getPorcentagemProcessador() {
         Double processador = new Looca().getProcessador().getUso();
-        
+
         return processador;
     }
-    
-    public Double getPorcentagemRam(){
+
+    public Double getPorcentagemRam() {
         Double porcentUsoMemoria = new Looca().getMemoria().getEmUso() * 100.00 / new Looca().getMemoria().getTotal();
-        
+
         return porcentUsoMemoria;
     }
-    
-        public Double getPorcentagemDisco() {
+
+    public Double getPorcentagemDisco() {
         List<Volume> volumes = new Looca().getGrupoDeDiscos().getVolumes();
 
         Long volumeTotal = 0L;
@@ -36,6 +36,8 @@ public class CalculosUso {
             volumeTotal = v.getTotal();
             volumeDisponivel = v.getDisponivel();
         }
+        
+        
 
         Long volumeEmUso = volumeTotal - volumeDisponivel;
         Double porcentVolumeEmUso = (volumeEmUso * 100.00 / volumeTotal);
