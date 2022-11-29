@@ -40,7 +40,6 @@ public class ModuloConexao {
 
                 this.connection = new JdbcTemplate(dataSource);
 
-                System.out.println("Conectado com sucesso " + this.connection);
                 new Log("uso", "Conectado com o banco do Mysql");
                 return this.connection;
 
@@ -63,7 +62,6 @@ public class ModuloConexao {
 
                 this.connection = new JdbcTemplate(dataSource);
 
-                System.out.println("Conectado com sucesso " + this.connection);
                 new Log("uso", "Conectado com o banco da Azure");
                 return this.connection;
 

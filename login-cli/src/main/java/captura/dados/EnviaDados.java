@@ -30,7 +30,6 @@ public class EnviaDados {
                 } catch (Exception ex) {
                     new Log("erro", "Erro ao tentar inserir dados do Processador no banco" + ex.getMessage());
                 }
-                System.out.println("processador");
 
             } else if (componente.getFkComponente().equals(2)) {
 
@@ -41,8 +40,6 @@ public class EnviaDados {
                 } catch (Exception ex) {
                     new Log("erro", "Erro ao tentar inserir dados da RAM no banco" + ex.getMessage());
                 }
-
-                System.out.println("memoria");
 
             } else if (componente.getFkComponente().equals(3)) {
 
@@ -55,8 +52,6 @@ public class EnviaDados {
                 } catch (Exception ex) {
                     new Log("erro", "Erro ao tentar inserir dados do Disco no banco" + ex.getMessage());
                 }
-
-                System.out.println("disco");
 
             }
         }

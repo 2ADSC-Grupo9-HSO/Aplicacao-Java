@@ -58,9 +58,9 @@ public class TelaDados {
         timer2.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 try {
-                    inovacao.atualizaProcessosClasse();
                     inovacao.repararTotem();
                     inovacao.reiniciarMaquinaRemoto();
+                    inovacao.atualizaProcessosClasse();
                 } catch (IOException ex) {
                     System.out.println("Erro" + ex);
                 }

@@ -41,15 +41,13 @@ public class Inovacao {
 
         if (maqPro.getQtd_maquinas_debilitadas() > 0) {
             if (maquina.getHostName().indexOf("T") == 0) {
-                try{
-                shell.executeCommand("shutdown /r");
-                new Log("uso", "Reparando totem");
-                }catch(Exception ex){
-                new Log("erro", "Eroo ao reparar totem");
+                try {
+                    shell.executeCommand("shutdown /r");
+                    new Log("uso", "Reparando totem");
+                } catch (Exception ex) {
+                    new Log("erro", "Eroo ao reparar totem");
                 }
             }
-        } else {
-            System.out.println("Maquina saudavel");
         }
     }
 
@@ -62,37 +60,44 @@ public class Inovacao {
     }
 
     private void matarProcessos() throws IOException {
-        for (TopProcesso processo : this.maquina.TopProcessos) {
-            if (processo.getChaveAtivacao().equals("1")) {
-                System.out.println("Caiu aqui ");
-                if (looca.getSistema().getSistemaOperacional().equalsIgnoreCase("Windows")) {
-                    try{
-                    shell.executeCommand("taskkill /F /PID" + processo.getPid());
-                    new Log("uso", "Matando processo "+ processo.getPid());
-                    }catch(Exception ex){
-                    new Log("erro", "erroo ao Matar processo "+ processo.getPid() );
+        if (!this.maquina.TopProcessos.isEmpty()) {
+            for (TopProcesso processo : this.maquina.TopProcessos) {
+                if (processo.getChaveAtivacao().equals("1")) {
+                    if (looca.getSistema().getSistemaOperacional().equalsIgnoreCase("Windows")) {
+                        try {
+                            shell.executeCommand("taskkill /F /PID" + processo.getPid());
+                            new Log("uso", "Matando processo " + processo.getPid());
+                        } catch (Exception ex) {
+                            new Log("erro", "erroo ao Matar processo " + processo.getPid());
+                        }
+                    } else {
+                        try {
+                            shell.executeCommand("kill -9 " + processo.getPid());
+                            new Log("uso", "Matando processo " + processo.getPid());
+                        } catch (Exception ex) {
+                            new Log("erro", "erroo ao Matar processo " + processo.getPid());
+                        }
+
                     }
-                } else {
-                    try{
-                    shell.executeCommand("kill -9 " + processo.getPid());
-                    new Log("uso", "Matando processo "+ processo.getPid());
-                    }catch(Exception ex){
-                    new Log("erro", "erroo ao Matar processo "+ processo.getPid() );
-                    }
-                    
                 }
             }
         }
         listarMaioresProcessos();
     }
 
-    private void listarMaioresProcessos() throws IOException{
+    private void listarMaioresProcessos() throws IOException {
         ProcessosGroup grupoProcessos = looca.getGrupoDeProcessos();
         List<Processo> processos = grupoProcessos.getProcessos();
 
         List<Processo> maioresProcessos = new ArrayList();
-
-        for (int i = 0; i < 5; i++) {
+        
+        Integer contador = 5;
+        
+        if(processos.size() < 5){
+            contador = processos.size();
+        }
+        
+        for (int i = 0; i < contador; i++) {
             Processo maiorProcesso = processos.get(0);
             for (int k = 0; k < processos.size(); k++) {
                 if (processos.get(k).getUsoMemoria() > maiorProcesso.getUsoMemoria()) {
@@ -105,7 +110,7 @@ public class Inovacao {
         inserirProcessosBanco(maioresProcessos);
     }
 
-    private void inserirProcessosBanco(List<Processo> maioresProcessos) throws IOException{
+    private void inserirProcessosBanco(List<Processo> maioresProcessos) throws IOException {
         if (this.maquina.TopProcessos.isEmpty()) {
             for (Processo processo : maioresProcessos) {
                 new Requests().insertProcessos(this.conexao, processo, this.maquina.getIdMaquina());
@@ -129,16 +134,14 @@ public class Inovacao {
             chaveFormatada = chaveFormatada.substring(posicaoInical + 1, posicaoFinal);
         }
 
-        System.out.println(chaveFormatada);
-
         if (chaveFormatada.equals("1")) {
-            try{
-                new Log("uso", "Reiniciando maquina..." );
-            new Requests().atualizarChaveMaquina(this.conexao, this.maquina.getIdMaquina());
-            shell.executeCommand("shutdown /r");
-             
-            }catch(Exception ex){
-            new Log("erro", "erroo reiniciar a maquina" );
+            try {
+                new Log("uso", "Reiniciando maquina...");
+                new Requests().atualizarChaveMaquina(this.conexao, this.maquina.getIdMaquina());
+                shell.executeCommand("shutdown /r");
+
+            } catch (Exception ex) {
+                new Log("erro", "erroo reiniciar a maquina");
             }
         }
     }

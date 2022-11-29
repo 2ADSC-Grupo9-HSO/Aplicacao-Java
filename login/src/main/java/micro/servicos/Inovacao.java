@@ -48,8 +48,6 @@ public class Inovacao {
                     new Log("erro", "Eroo ao reparar totem");
                 }
             }
-        } else {
-            System.out.println("Maquina saudavel");
         }
     }
 
@@ -62,24 +60,25 @@ public class Inovacao {
     }
 
     private void matarProcessos() throws IOException {
-        for (TopProcesso processo : this.maquina.TopProcessos) {
-            if (processo.getChaveAtivacao().equals("1")) {
-                System.out.println("Caiu aqui ");
-                if (looca.getSistema().getSistemaOperacional().equalsIgnoreCase("Windows")) {
-                    try {
-                        shell.executeCommand("taskkill /F /PID" + processo.getPid());
-                        new Log("uso", "Matando processo " + processo.getPid());
-                    } catch (Exception ex) {
-                        new Log("erro", "erroo ao Matar processo " + processo.getPid());
-                    }
-                } else {
-                    try {
-                        shell.executeCommand("kill -9 " + processo.getPid());
-                        new Log("uso", "Matando processo " + processo.getPid());
-                    } catch (Exception ex) {
-                        new Log("erro", "erroo ao Matar processo " + processo.getPid());
-                    }
+        if (!this.maquina.TopProcessos.isEmpty()) {
+            for (TopProcesso processo : this.maquina.TopProcessos) {
+                if (processo.getChaveAtivacao().equals("1")) {
+                    if (looca.getSistema().getSistemaOperacional().equalsIgnoreCase("Windows")) {
+                        try {
+                            shell.executeCommand("taskkill /F /PID" + processo.getPid());
+                            new Log("uso", "Matando processo " + processo.getPid());
+                        } catch (Exception ex) {
+                            new Log("erro", "erroo ao Matar processo " + processo.getPid());
+                        }
+                    } else {
+                        try {
+                            shell.executeCommand("kill -9 " + processo.getPid());
+                            new Log("uso", "Matando processo " + processo.getPid());
+                        } catch (Exception ex) {
+                            new Log("erro", "erroo ao Matar processo " + processo.getPid());
+                        }
 
+                    }
                 }
             }
         }
@@ -91,8 +90,14 @@ public class Inovacao {
         List<Processo> processos = grupoProcessos.getProcessos();
 
         List<Processo> maioresProcessos = new ArrayList();
-
-        for (int i = 0; i < 5; i++) {
+        
+        Integer contador = 5;
+        
+        if(processos.size() < 5){
+            contador = processos.size();
+        }
+        
+        for (int i = 0; i < contador; i++) {
             Processo maiorProcesso = processos.get(0);
             for (int k = 0; k < processos.size(); k++) {
                 if (processos.get(k).getUsoMemoria() > maiorProcesso.getUsoMemoria()) {
@@ -128,8 +133,6 @@ public class Inovacao {
 
             chaveFormatada = chaveFormatada.substring(posicaoInical + 1, posicaoFinal);
         }
-
-        System.out.println(chaveFormatada);
 
         if (chaveFormatada.equals("1")) {
             try {

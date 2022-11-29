@@ -38,7 +38,7 @@ public class LoginCli {
         } while (username.isEmpty());
 
         do {
-            System.out.println("Password");
+            System.out.println("Password:");
             Password = leitor.nextLine();
         } while (Password.isEmpty());
         this.efetuarLogin(username, Password);
@@ -52,9 +52,11 @@ public class LoginCli {
         Maquina maquinaAzure = this.requisicoes.loginSQL(conexaoAzure, user, senha);
 
         if (maquinaMysql != null && maquinaAzure != null) {
+            
+            this.executeCommand("clear");
 
             System.out.println("Bem vindo usuário da máquina " + maquinaAzure.getHostName());
-            System.out.println("Pode usar su computador normalmente, seus dados já estão sendo coletados");
+            System.out.println("Pode usar seu computador normalmente, seus dados já estão sendo coletados");
 
             new TelaDados(conexaoMysql, maquinaMysql, conexaoAzure, maquinaAzure);
 

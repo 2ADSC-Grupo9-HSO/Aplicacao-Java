@@ -99,8 +99,6 @@ public class Log {
         PrintWriter gravarArq = new PrintWriter(this.arq);
         gravarArq.printf("Menssagem: %s; Data:%s; Horário:%s\n", this.menssagem, dataAtual, tempoAtual);
         this.arq.close();
-
-        System.out.printf("\nLog de %s foi gravado com sucesso\n", this.tipoArquivo);
     }
 
     public String lerLog(String tipoLog, String dataLog, Integer versaoLog) throws IOException {
