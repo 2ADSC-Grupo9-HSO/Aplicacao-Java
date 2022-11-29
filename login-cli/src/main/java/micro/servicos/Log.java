@@ -71,7 +71,7 @@ public class Log {
         File arquivo = new File(String.format("%s%sLogs%s%s-LOG-%s(1).txt", this.buscarUsuarioLocal(), this.tipoFileSystem, this.tipoFileSystem, dataAtual, this.tipoArquivo.toUpperCase()));
 
         // VERIFICA O TAMANHO DO ARQUIVO EM BYTES E CRIA OUTRO COM NOVA VERSÃO CASO ULTRAPASSE O LIMITE
-        Integer bytes = 100; // Reajustar o limite de tamanho para apresentação 
+        Integer bytes = 1000; // Reajustar o limite de tamanho para apresentação 
         if (arquivo.exists()) {
             for (int i = 2; i <= 10; i++) {
                 if (arquivo.length() < bytes) {
