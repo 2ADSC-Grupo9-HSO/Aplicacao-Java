@@ -38,7 +38,7 @@ public class TelaDados {
         int delay = 2000;
         int interval = 30000;
         int delay2 = 2000;
-        int interval2 = 500;
+        int interval2 = 700;
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {

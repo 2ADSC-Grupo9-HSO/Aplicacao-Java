@@ -84,7 +84,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>login.Login</mainClass> 
+                            <mainClass>login.Main</mainClass> 
                         </manifest>
                     </archive>
                 </configuration>
