@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JTextField;
 import captura.dados.TelaDados;
+import java.io.IOException;
 import micro.servicos.Log;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -18,7 +19,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  *
  * @author rmacedo
  */
-public class Login extends javax.swing.JFrame{
+public class Login extends javax.swing.JFrame {
 
     private ModuloConexao conexaoMysql = new ModuloConexao("Desenvolvimento");
     private ModuloConexao conexaoAzure = new ModuloConexao("Produção");
@@ -50,7 +51,7 @@ public class Login extends javax.swing.JFrame{
         textField.setForeground(Color.white);
     }
 
-    private void efetuarLogin(String user, String senha) {
+    private void efetuarLogin(String user, String senha) throws IOException {
         JdbcTemplate conexaoMysql = this.conexaoMysql.getConnection();
         JdbcTemplate conexaoAzure = this.conexaoAzure.getConnection();
 
@@ -58,10 +59,14 @@ public class Login extends javax.swing.JFrame{
         Maquina maquinaAzure = this.requisicoes.loginSQL(conexaoAzure, user, senha);
 
         if (maquinaMysql != null && maquinaAzure != null) {
+            try {
+                new TelaDados(conexaoMysql, maquinaMysql, conexaoAzure, maquinaAzure).setVisible(true);
+                this.dispose();
+                 new Log("uso", "Navegando para tela de inserção de dados");
+            } catch (Exception ex) {
 
-            new TelaDados(conexaoMysql, maquinaMysql, conexaoAzure, maquinaAzure).setVisible(true);
-            this.dispose();
-
+                new Log("erro", "Erro ao tentar inserir dados do Processador no banco" + ex.getMessage());
+            }
         } else if (maquinaMysql == null && maquinaAzure != null) {
 
             this.requisicoes.insertMaquinaDocker(conexaoMysql, maquinaAzure.getHostName(), maquinaAzure.getSenhaMaquina(), maquinaAzure.getSistemaOperacional());
@@ -317,7 +322,10 @@ public class Login extends javax.swing.JFrame{
         } else if (senha.equalsIgnoreCase("") || senha.equalsIgnoreCase("Password")) {
             lblWarning.setText("O campo Password é obrigatório");
         } else {
-            this.efetuarLogin(usuario, senha);
+            try {
+                this.efetuarLogin(usuario, senha);
+            } catch (IOException ex) {
+            }
         }
 
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -401,21 +409,18 @@ public class Login extends javax.swing.JFrame{
         //</editor-fold>
         //</editor-fold>
 
-        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);
             }
         });
-       
-        LoginCli shell = new LoginCli();
-        shell.executeCommand("clear");
+
         
+
         //REGISTERING THE START OF APPLICATION IN USAGE LOG AT EACH RUN 
         new Log("Uso", "Aplicação começou a rodar");
-        
-        shell.cli();
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

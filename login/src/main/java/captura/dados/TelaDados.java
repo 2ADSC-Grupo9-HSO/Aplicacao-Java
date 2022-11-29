@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 import micro.servicos.Inovacao;
+import micro.servicos.Log;
 import static micro.servicos.SlackIntegrationTest.sendMessageDiscoToSlack;
 import static micro.servicos.SlackIntegrationTest.sendMessageProcessadorToSlack;
 import static micro.servicos.SlackIntegrationTest.sendMessageRamToSlack;
@@ -43,13 +44,16 @@ public class TelaDados extends javax.swing.JFrame {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
+                try {
+                    new EnviaDados().enviarDados(maquinaMysql, conexaoMysql);
+                    new EnviaDados().enviarDados(maquinaAzure, conexaoAzure);
+                    sendMessageProcessadorToSlack("Valor de processador ultrapassado!", conexaoAzure, maquinaAzure);
+                    sendMessageRamToSlack("Valor de memória RAM ultrapassada!", conexaoAzure, maquinaAzure);
+                    sendMessageDiscoToSlack("Valor de disco ultrapassado!");
+                } catch (IOException ex) {
 
-               new EnviaDados().enviarDados(maquinaMysql, conexaoMysql);
-               new EnviaDados().enviarDados(maquinaAzure, conexaoAzure);
+                }
 
-                sendMessageProcessadorToSlack("Valor de processador ultrapassado!", conexaoAzure, maquinaAzure);
-                sendMessageRamToSlack("Valor de memória RAM ultrapassada!", conexaoAzure, maquinaAzure);
-                sendMessageDiscoToSlack("Valor de disco ultrapassado!");
             }
         }, delay, interval);
 
@@ -61,7 +65,7 @@ public class TelaDados extends javax.swing.JFrame {
                     inovacao.repararTotem();
                     inovacao.reiniciarMaquinaRemoto();
                 } catch (IOException ex) {
-                    System.out.println("Erro" + ex);
+
                 }
             }
         }, delay2, interval2);
@@ -145,7 +149,7 @@ public class TelaDados extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws IOException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

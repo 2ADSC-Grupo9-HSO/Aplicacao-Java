@@ -28,6 +28,63 @@ public class LoginCli {
     private ModuloConexao conexaoAzure = new ModuloConexao("Produção");
     private Requests requisicoes = new Requests();
 
+    public void cli() throws IOException {
+        Scanner leitor = new Scanner(System.in);
+        String username;
+        String Password;
+        do {
+            System.out.println("Username:");
+            username = leitor.nextLine();
+        } while (username.isEmpty());
+
+        do {
+            System.out.println("Password");
+            Password = leitor.nextLine();
+        } while (Password.isEmpty());
+        this.efetuarLogin(username, Password);
+    }
+
+    private void efetuarLogin(String user, String senha) throws IOException {
+        JdbcTemplate conexaoMysql = this.conexaoMysql.getConnection();
+        JdbcTemplate conexaoAzure = this.conexaoAzure.getConnection();
+
+        Maquina maquinaMysql = this.requisicoes.loginSQL(conexaoMysql, user, senha);
+        Maquina maquinaAzure = this.requisicoes.loginSQL(conexaoAzure, user, senha);
+
+        if (maquinaMysql != null && maquinaAzure != null) {
+
+            System.out.println("Bem vindo usuário da máquina " + maquinaAzure.getHostName());
+            System.out.println("Pode usar su computador normalmente, seus dados já estão sendo coletados");
+
+            new TelaDados(conexaoMysql, maquinaMysql, conexaoAzure, maquinaAzure);
+
+        } else if (maquinaMysql == null && maquinaAzure != null) {
+
+            this.requisicoes.insertMaquinaDocker(conexaoMysql, maquinaAzure.getHostName(), maquinaAzure.getSenhaMaquina(), maquinaAzure.getSistemaOperacional());
+
+            Maquina maquinaMysql2 = this.requisicoes.loginSQL(conexaoMysql, user, senha);
+
+            if (maquinaMysql2 != null) {
+
+                this.executeCommand("clear");
+
+                System.out.println("Bem vindo usuário da máquina " + maquinaAzure.getHostName());
+                System.out.println("Pode usar su computador normalmente, seus dados já estão sendo coletados");
+
+                new TelaDados(conexaoMysql, maquinaMysql2, conexaoAzure, maquinaAzure);
+            }
+
+        } else {
+
+            this.executeCommand("clear");
+
+            System.out.println("Ops... usuário ou senha errado, por favor tente novamente");
+
+            this.cli();
+        }
+
+    }
+
     public void executeCommand(final String command) throws IOException {
 
         final ArrayList<String> commands = new ArrayList<String>();
@@ -106,7 +163,6 @@ public class LoginCli {
             secureClose(br);
             return retorno;
         }
-        
 
     }
 
