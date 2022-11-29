@@ -26,11 +26,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 public class SlackIntegrationTest {
 
-    private static String webHookUrl = "https://hooks.slack.com/services/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";
-    private static String OAuthToken = "xoxb-4299325918501-4327140979589-PiJXduaP4u6kRqzQGQv2F53C";
+    private static String webHookUrl = "https://hooks.slack.com/services/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";
+    private static String OAuthToken = "xoxb-4299325918501-4302313302899-bw3OcRb3AOI7XGyTpvJqkmGX";
     private static String SlackChannel = "hsochannel";
 
     public static void sendMessageProcessadorToSlack(String mensagem, JdbcTemplate conexao, Maquina maquina) {
+        
+
         Requests requests = new Requests();
         MaquinaComProblema maq2 = requests.selectMaquinaDanificada(conexao, maquina);
         
